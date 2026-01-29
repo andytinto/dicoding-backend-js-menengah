@@ -1,11 +1,12 @@
 import express from 'express';
+import { healthCheck, createAlbum , getAlbumById} from '../controller/album-controller.js';
 import validate from '../../../middlewares/validate.js';
-import { createAlbum, healthCheck } from '../controller/album-controller.js';
 import { createAlbumPayload } from '../../../services/music/validator/schema.js';
 
-const routes = express.Router();
+const router = express.Router();
 
-routes.get('/health', healthCheck);
-routes.post('/albums', validate(createAlbumPayload), createAlbum);
+router.get('/health', healthCheck);
+router.post('/albums', validate(createAlbumPayload), createAlbum);
+router.get('/albums/:id', getAlbumById);
 
-export default routes;
+export default router;

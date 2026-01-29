@@ -24,3 +24,18 @@ export const createAlbum = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAlbumById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const album = await albumRepositories.getAlbumById(id);
+
+    return response(res, 200, 'Album berhasil ditemukan', { 
+      id: album.id,
+      name: album.name,
+      year: album.year,
+     });
+  } catch (error) {
+    next(error);
+  }
+};
