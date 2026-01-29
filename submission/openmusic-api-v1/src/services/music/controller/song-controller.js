@@ -38,6 +38,10 @@ export const getSongById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const song = await songRepositories.getSongById(id);
+    if (!song) {
+        return response(res, 404, 'Lagu tidak ditemukan');
+    }
+    
     return response(res, 200, null, { song : {
         id: song.id,
         title: song.title,
@@ -57,6 +61,12 @@ export const updateSongById = async (req, res, next) => {
     try {   
         const { id } = req.params;
         const { title, year, genre, performer, duration, albumId } = req.body ?? {};
+        const songIsAny = await songRepositories.getSongById(id);
+
+        if (!songIsAny) {
+            return response(res, 404, 'Lagu tidak ditemukan');
+        }
+
         const song = await songRepositories.updateSongById({ id, title, year, genre, performer, duration, albumId });
         
         if (!song) {
@@ -71,6 +81,12 @@ export const updateSongById = async (req, res, next) => {
 export const deleteSongById = async (req, res, next) => {
     try {
         const { id } = req.params;
+        const songIsAny = await songRepositories.getSongById(id);
+
+        if (!songIsAny) {
+            return response(res, 404, 'Lagu tidak ditemukan');
+        }
+
         await songRepositories.deleteSongById(id);
         return response(res, 200, 'Lagu berhasil dihapus', null);
     } catch (error) {

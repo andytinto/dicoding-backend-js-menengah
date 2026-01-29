@@ -1,6 +1,6 @@
 const response = (res, statusCode, message, data) => {
   const result = {
-    status: statusCode < 400 ? 'success' : 'failed',
+    status: statusCode < 400 ? 'success' : 'fail',
   };
 
   if (message) {
