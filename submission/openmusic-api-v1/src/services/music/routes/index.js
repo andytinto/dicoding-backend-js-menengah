@@ -1,12 +1,14 @@
 import express from 'express';
-import { healthCheck, createAlbum , getAlbumById} from '../controller/album-controller.js';
+import { healthCheck, createAlbum , getAlbumById, updateAlbumById, deleteAlbumById} from '../controller/album-controller.js';
 import validate from '../../../middlewares/validate.js';
-import { createAlbumPayload } from '../../../services/music/validator/schema.js';
+import { createAlbumPayload, updateAlbumPayload } from '../../../services/music/validator/schema.js';
 
 const router = express.Router();
 
 router.get('/health', healthCheck);
 router.post('/albums', validate(createAlbumPayload), createAlbum);
 router.get('/albums/:id', getAlbumById);
+router.put('/albums/:id', validate(updateAlbumPayload), updateAlbumById);
+router.delete('/albums/:id', deleteAlbumById);
 
 export default router;
