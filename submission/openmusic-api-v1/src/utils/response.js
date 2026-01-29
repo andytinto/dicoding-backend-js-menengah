@@ -1,8 +1,8 @@
 const response = (res, statusCode, message, data) =>
   res.status(statusCode).json({
-    code: statusCode,
+    // code: statusCode,
     status: statusCode < 400 ? 'success' : 'failed',
-    message,
+    // message,
     data,
   }).end();
 
