@@ -44,6 +44,36 @@ export const getAlbumById = async (req, res, next) => {
   }
 };
 
+export const getAlbumByIdWithSongs = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const rows = await albumRepositories.getAlbumByIdWithSongs(id);
+
+    if (!rows) {
+      return response(res, 404, 'Album tidak ditemukan');
+    }
+
+    const album = {
+      id: rows[0].album_id,
+      name: rows[0].name,
+      year: rows[0].year,
+      songs: rows
+        .filter(row => row.song_id !== null)
+        .map(row => ({
+          id: row.song_id,
+          title: row.title,
+          performer: row.performer,
+        })),
+    };
+
+    return response(res, 200, null, { album });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 export const updateAlbumById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -69,7 +99,7 @@ export const deleteAlbumById = async (req, res, next) => {
     if (!albumIsAny) {
       return response(res, 404, 'Album tidak ditemukan');
     }
-    
+
     await albumRepositories.deleteAlbumById(id);
     return response(res, 200, 'Album berhasil dihapus', null);
   } catch (error) {

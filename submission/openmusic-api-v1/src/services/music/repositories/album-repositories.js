@@ -26,6 +26,31 @@ class AlbumRepositories {
     return result.rows[0];
   }
 
+  async getAlbumByIdWithSongs(id) {
+    const query = {
+      text: `
+      SELECT 
+        a.id AS album_id,
+        a.name,
+        a.year,
+        s.id AS song_id,
+        s.title,
+        s.performer
+      FROM albums a
+      LEFT JOIN songs s ON s.album_id = a.id
+      WHERE a.id = $1`,
+        values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+        return null;
+    }
+
+    return result.rows;
+  }
+
   async updateAlbumById({ id, name, year }) {
     const updatedAt = new Date().toISOString();
     const query = {
