@@ -38,7 +38,7 @@ export const getAlbumById = async (req, res, next) => {
       id: album.id,
       name: album.name,
       year: album.year,
-     }});
+    } });
   } catch (error) {
     next(error);
   }
@@ -59,12 +59,12 @@ export const getAlbumByIdWithSongs = async (req, res, next) => {
       name: rows[0].name,
       year: rows[0].year,
       songs: rows
-        .filter(row => row.song_id !== null)
-        .map(row => ({
+        .filter((row) => row.song_id !== null)
+        .map(((row) => ({
           id: row.song_id,
           title: row.title,
           performer: row.performer,
-        })),
+        }))),
     };
 
     return response(res, 200, null, { album });
@@ -84,7 +84,7 @@ export const updateAlbumById = async (req, res, next) => {
       return response(res, 404, 'Album tidak ditemukan');
     }
 
-    const album = await albumRepositories.updateAlbumById({ id, name, year });
+    await albumRepositories.updateAlbumById({ id, name, year });
     return response(res, 200, 'Album berhasil diperbarui', null);
   } catch (error) {
     next(error);

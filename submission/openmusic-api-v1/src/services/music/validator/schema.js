@@ -28,10 +28,6 @@ export const updateSongsPayload = Joi.object({
   year: Joi.number().integer().positive().required(),
   genre: Joi.string().required(),
   performer: Joi.string().required(),
-  duration: Joi.number()
-  .integer()
-  .positive()
-  .allow(null),
-  albumId: Joi.string()
-  .allow(null)
+  duration: Joi.number().integer().positive().allow(null),
+  albumId: Joi.string().allow(null)
 });

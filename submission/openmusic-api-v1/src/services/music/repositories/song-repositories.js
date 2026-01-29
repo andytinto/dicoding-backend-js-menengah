@@ -5,7 +5,7 @@ class SongRepositories {
     this._pool = new Pool();
   }
 
-   async createSongs({ title, year, genre, performer, duration, albumId }) {
+  async createSongs({ title, year, genre, performer, duration, albumId }) {
     const id = nanoid(16);
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
@@ -35,15 +35,13 @@ class SongRepositories {
   }
 
   async getSongByWithFilter({ title, performer }) {
-    let query = {
-        text: `
-        SELECT id, title, performer
-        FROM songs
-        WHERE 1=1`,
-        values: [],
+    const query = {
+      text: `
+      SELECT id, title, performer
+      FROM songs
+      WHERE 1=1`,
+      values: [],
     };
-
-    const conditions = [];
 
     if (title) {
       query.values.push(`%${title}%`);
@@ -51,8 +49,8 @@ class SongRepositories {
     }
 
     if (performer) {
-        query.values.push(`%${performer}%`);
-        query.text += ` AND LOWER(performer) LIKE LOWER($${query.values.length})`;
+      query.values.push(`%${performer}%`);
+      query.text += ` AND LOWER(performer) LIKE LOWER($${query.values.length})`;
     }
 
     const result = await this._pool.query(query);

@@ -1,5 +1,5 @@
 import express from 'express';
-import { healthCheck, createAlbum , getAlbumByIdWithSongs, updateAlbumById, deleteAlbumById} from '../controller/album-controller.js';
+import { healthCheck, createAlbum, getAlbumByIdWithSongs, updateAlbumById, deleteAlbumById } from '../controller/album-controller.js';
 import { createSongs, getSongByWithFilter, getSongById, updateSongById, deleteSongById } from '../controller/song-controller.js';
 import validate from '../../../middlewares/validate.js';
 import { createAlbumPayload, updateAlbumPayload, createSongsPayload, updateSongsPayload } from '../../../services/music/validator/schema.js';

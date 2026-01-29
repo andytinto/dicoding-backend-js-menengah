@@ -5,7 +5,7 @@ class AlbumRepositories {
     this._pool = new Pool();
   }
 
-   async createAlbums({ name, year }) {
+  async createAlbums({ name, year }) {
     const id = nanoid(16);
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
@@ -39,13 +39,13 @@ class AlbumRepositories {
       FROM albums a
       LEFT JOIN songs s ON s.album_id = a.id
       WHERE a.id = $1`,
-        values: [id],
+      values: [id],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-        return null;
+      return null;
     }
 
     return result.rows;

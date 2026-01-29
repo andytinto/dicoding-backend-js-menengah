@@ -39,20 +39,20 @@ export const getSongById = async (req, res, next) => {
     const { id } = req.params;
     const song = await songRepositories.getSongById(id);
     if (!song) {
-        return response(res, 404, 'Lagu tidak ditemukan');
+      return response(res, 404, 'Lagu tidak ditemukan');
     }
 
     return response(res, 200, null, { song : {
-        id: song.id,
-        title: song.title,
-        year: song.year,
-        genre: song.genre,
-        performer: song.performer,
-        duration: song.duration,
-        albumId: song.album_id,    
-        }
+      id: song.id,
+      title: song.title,
+      year: song.year,
+      genre: song.genre,
+      performer: song.performer,
+      duration: song.duration,
+      albumId: song.album_id,
+    }
     });
-    } catch (error) {
+  } catch (error) {
     next(error);
   }
 };
@@ -79,38 +79,38 @@ export const getSongByWithFilter = async (req, res, next) => {
 
 
 export const updateSongById = async (req, res, next) => {
-    try {   
-        const { id } = req.params;
-        const { title, year, genre, performer, duration, albumId } = req.body ?? {};
-        const songIsAny = await songRepositories.getSongById(id);
+  try {
+    const { id } = req.params;
+    const { title, year, genre, performer, duration, albumId } = req.body ?? {};
+    const songIsAny = await songRepositories.getSongById(id);
 
-        if (!songIsAny) {
-            return response(res, 404, 'Lagu tidak ditemukan');
-        }
-
-        const song = await songRepositories.updateSongById({ id, title, year, genre, performer, duration, albumId });
-        
-        if (!song) {
-            throw new InvariantError('Gagal memperbarui lagu. Id tidak ditemukan');
-        }
-        return response(res, 200, 'Lagu berhasil diperbarui', null);
-    } catch (error) {
-        next(error);
+    if (!songIsAny) {
+      return response(res, 404, 'Lagu tidak ditemukan');
     }
-}
+
+    const song = await songRepositories.updateSongById({ id, title, year, genre, performer, duration, albumId });
+
+    if (!song) {
+      throw new InvariantError('Gagal memperbarui lagu. Id tidak ditemukan');
+    }
+    return response(res, 200, 'Lagu berhasil diperbarui', null);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const deleteSongById = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const songIsAny = await songRepositories.getSongById(id);
+  try {
+    const { id } = req.params;
+    const songIsAny = await songRepositories.getSongById(id);
 
-        if (!songIsAny) {
-            return response(res, 404, 'Lagu tidak ditemukan');
-        }
-
-        await songRepositories.deleteSongById(id);
-        return response(res, 200, 'Lagu berhasil dihapus', null);
-    } catch (error) {
-        next(error);
+    if (!songIsAny) {
+      return response(res, 404, 'Lagu tidak ditemukan');
     }
+
+    await songRepositories.deleteSongById(id);
+    return response(res, 200, 'Lagu berhasil dihapus', null);
+  } catch (error) {
+    next(error);
+  }
 };

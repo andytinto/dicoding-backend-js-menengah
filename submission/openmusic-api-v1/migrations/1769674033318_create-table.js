@@ -9,31 +9,31 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-    pgm.createTable('albums', {
-      id: {
-        type: 'VARCHAR(50)',
-        notNull: true,
-        primaryKey: true,
-      },
-      name: {
-        type: 'TEXT',
-        notNull: true,
-      },
-      year: {
-        type: 'INT',
-        notNull: true,
-      },
-      created_at: {
-        type: 'TIMESTAMP',
-        notNull: true,
-      },
-      updated_at: {
-        type: 'TIMESTAMP',
-        notNull: true,
-      },
-    }); 
-    
-    pgm.createTable('songs', {
+  pgm.createTable('albums', {
+    id: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+      primaryKey: true,
+    },
+    name: {
+      type: 'TEXT',
+      notNull: true,
+    },
+    year: {
+      type: 'INT',
+      notNull: true,
+    },
+    created_at: {
+      type: 'TIMESTAMP',
+      notNull: true,
+    },
+    updated_at: {
+      type: 'TIMESTAMP',
+      notNull: true,
+    },
+  });
+
+  pgm.createTable('songs', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
@@ -83,6 +83,6 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-    pgm.dropTable('albums');
-    pgm.dropTable('songs');
+  pgm.dropTable('albums');
+  pgm.dropTable('songs');
 };
