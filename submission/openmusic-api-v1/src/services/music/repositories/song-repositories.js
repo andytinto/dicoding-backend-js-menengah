@@ -34,6 +34,32 @@ class SongRepositories {
     return result.rows[0];
   }
 
+  async getSongByWithFilter({ title, performer }) {
+    let query = {
+        text: `
+        SELECT id, title, performer
+        FROM songs
+        WHERE 1=1`,
+        values: [],
+    };
+
+    const conditions = [];
+
+    if (title) {
+      query.values.push(`%${title}%`);
+      query.text += ` AND LOWER(title) LIKE LOWER($${query.values.length})`;
+    }
+
+    if (performer) {
+        query.values.push(`%${performer}%`);
+        query.text += ` AND LOWER(performer) LIKE LOWER($${query.values.length})`;
+    }
+
+    const result = await this._pool.query(query);
+    return result.rows;
+  }
+
+
   async updateSongById({ id, title, year, genre, performer, duration, albumId }) {
     const updatedAt = new Date().toISOString();
     const query = {

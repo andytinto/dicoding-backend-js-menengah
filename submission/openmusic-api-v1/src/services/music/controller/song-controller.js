@@ -41,7 +41,7 @@ export const getSongById = async (req, res, next) => {
     if (!song) {
         return response(res, 404, 'Lagu tidak ditemukan');
     }
-    
+
     return response(res, 200, null, { song : {
         id: song.id,
         title: song.title,
@@ -56,6 +56,27 @@ export const getSongById = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getSongByWithFilter = async (req, res, next) => {
+  try {
+    console.log('QUERY CONTROLLER:', req.query);
+    const { title, performer } = req.query;
+
+    const songs = await songRepositories.getSongByWithFilter({
+      title,
+      performer,
+    });
+
+    if (songs.length === 0) {
+      return response(res, 200, null, { songs: [] });
+    }
+
+    return response(res, 200, null, { songs : songs });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const updateSongById = async (req, res, next) => {
     try {   
