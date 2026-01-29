@@ -1,0 +1,5 @@
+Through the "Belajar Fundamental Back-End dengan JavaScript" course, this project demonstrates the implementation of core Back-End engineering principles in building a scalable and maintainable RESTful API.
+
+The development covers fundamental aspects of modern Back-End systems, including request handling, business logic separation, data persistence using relational databases, and secure resource access through authentication and authorization mechanisms. In addition, the project applies asynchronous processing, queue/message broker concepts, file storage management, and caching strategies to improve performance and system reliability.
+
+By implementing these components, the resulting Back-End application is designed to follow clean architecture principles, support modular development, and reflect real-world server-side application patterns commonly used in production environments.
