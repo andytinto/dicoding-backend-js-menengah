@@ -24,3 +24,21 @@ export const createSongs = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getSongById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const song = await songRepositories.getSongById(id);
+    return response(res, 200, null, { 
+        id: song.id,
+        title: song.title,
+        year: song.year,
+        genre: song.genre,
+        performer: song.performer,
+        duration: song.duration,
+        albumId: song.album_id,
+      });
+    } catch (error) {
+    next(error);
+  }
+};

@@ -16,6 +16,15 @@ class SongRepositories {
     const result = await this._pool.query(query);
     return result.rows[0];
   }
+
+  async getSongById(id) {
+    const query = {
+      text: 'SELECT id, title, year, genre, performer, duration, album_id FROM songs WHERE id = $1',
+      values: [id],
+    };
+    const result = await this._pool.query(query);
+    return result.rows[0];
+  }
 }
 
 export default new SongRepositories();
