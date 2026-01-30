@@ -83,6 +83,6 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-  pgm.dropTable('albums');
   pgm.dropTable('songs');
+  pgm.dropTable('albums');
 };
