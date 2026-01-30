@@ -59,12 +59,12 @@ export const getAlbumByIdWithSongs = async (req, res, next) => {
       name: rows[0].name,
       year: rows[0].year,
       songs: rows
-        .filter((row) => row.song_id !== null)
-        .map(((row) => ({
+        .filter(row => row.song_id !== null)
+        .map(row => ({
           id: row.song_id,
           title: row.title,
           performer: row.performer,
-        }))),
+        })),
     };
 
     return response(res, 200, null, { album });
