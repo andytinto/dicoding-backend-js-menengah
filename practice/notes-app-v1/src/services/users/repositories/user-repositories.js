@@ -41,6 +41,27 @@ class UserRepositories {
     const result = await this._pool.query(query);
     return result.rows[0];
   }
+
+  async verifyUserCredential(username, password) {
+    const query = {
+      text: 'SELECT id, password FROM users WHERE username = $1',
+      values: [username],
+    };
+
+    const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      return null;
+    }
+
+    const { id, password: hashedPassword } = result.rows[0];
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+
+    if (!isMatch) {
+      return null;
+    }
+
+    return id;
+  }
 }
 
 export default new UserRepositories();
