@@ -38,3 +38,17 @@ export const refreshToken = async (req, res, next) => {
 
   return response(res, 200, 'Access Token berhasil diperbarui', { accessToken });
 };
+
+export const logout = async (req, res, next) => {
+  const { refreshToken } = req.validated;
+
+  const result = await AuthenticationRepositories.verifyRefreshToken(refreshToken);
+
+  if (!result) {
+    return next(new InvariantError('Refresh token tidak valid'));
+  }
+
+  await AuthenticationRepositories.deleteRefreshToken(refreshToken);
+
+  return response(res, 200, 'Refresh token berhasil dihapus');
+};

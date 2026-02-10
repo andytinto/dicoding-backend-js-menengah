@@ -19,7 +19,7 @@ class UserRepositories {
     };
 
     const result = await this._pool.query(query);
-    return result.rows[0];
+    return result.rows[0].id;
   };
 
   async verifyUserCredential(username, password) {
@@ -42,6 +42,16 @@ class UserRepositories {
 
     return id;
   }
+
+  async verifyNewUserName(username) {
+    const query = {
+      text: 'SELECT username FROM users WHERE username = $1',
+      values: [username],
+    };
+
+    const result = await this._pool.query(query);
+    return result.rowCount > 0;
+  };
 }
 
 export default new UserRepositories();
