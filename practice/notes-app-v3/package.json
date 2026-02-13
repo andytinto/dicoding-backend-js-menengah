@@ -1,0 +1,35 @@
+{
+  "name": "notes-app-back-end",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:prod": "NODE_ENV=production node ./src/server.js",
+    "start:dev": "nodemon ./src/server.js",
+    "migrate": "node-pg-migrate",
+    "lint": "eslint ./src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "eslint-config-dicodingacademy": "^0.9.5",
+    "globals": "^17.2.0",
+    "nodemon": "^3.1.11"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "joi": "^18.0.2",
+    "jsonwebtoken": "^9.0.3",
+    "nanoid": "^3.1.20",
+    "node-pg-migrate": "^8.0.4",
+    "pg": "^8.17.2"
+  }
+}
