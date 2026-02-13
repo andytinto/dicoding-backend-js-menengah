@@ -1,11 +1,13 @@
 import Joi from 'joi';
 
 export const playlistPayloadSchema = Joi.object({
-  name: Joi.string().required(),
+  name: Joi.string()
+    .required(),
 });
 
 export const addSongToPlaylistPayloadSchema = Joi.object({
-  songId: Joi.string().required(),
+  songId: Joi.string()
+    .required(),
 });
 
 export const getPlaylistActivitiesPayloadSchema = Joi.object({
@@ -14,5 +16,7 @@ export const getPlaylistActivitiesPayloadSchema = Joi.object({
 });
 
 export const deletePlaylistPayloadSchema = Joi.object({
-  songId: Joi.string().length(16).required(),
+  songId: Joi.string()
+    .length(16)
+    .required(),
 });

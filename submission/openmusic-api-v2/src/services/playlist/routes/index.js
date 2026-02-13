@@ -22,8 +22,8 @@ router.delete('/playlists/:id/songs', authenticateToken, validate(deletePlaylist
 router.delete('/playlists/:id', authenticateToken, deletePlaylist);
 router.post('/playlists/:id/songs', authenticateToken, validate(addSongToPlaylistPayloadSchema), addSongToPlaylist);
 router.get('/playlists/:id/activities', authenticateToken, validate(getPlaylistActivitiesPayloadSchema, 'params'), getPlaylistActivities);
+router.get('/playlists/:id/songs', authenticateToken, getPlaylistSongsById);
 router.post('/collaborations', authenticateToken, createCollaboration);
 router.delete('/collaborations', authenticateToken, deleteCollaboration);
-router.get('/playlists/:id/songs', authenticateToken, getPlaylistSongsById);
 
 export default router;
