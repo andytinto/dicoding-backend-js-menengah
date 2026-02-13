@@ -9,31 +9,37 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-  pgm.createTable('users', {
+  pgm.createTable('playlist_song_activities', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
-    username: {
+    playlist_id: {
       type: 'VARCHAR(50)',
       notNull: true,
-      unique: true,
+      references: '"playlists"',
+      onDelete: 'CASCADE',
     },
-    password: {
-      type: 'TEXT',
+    song_id: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+      references: '"songs"',
+      onDelete: 'CASCADE',
+    },
+    user_id: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+      references: '"users"',
+      onDelete: 'CASCADE',
+    },
+    action: {
+      type: 'VARCHAR(10)',
       notNull: true,
     },
-    fullname: {
-      type: 'TEXT',
+    time: {
+      type: 'TIMESTAMP',
       notNull: true,
-    },
-    created_at: {
-      type: 'TEXT',
-      notNull: true,
-    },
-    updated_at: {
-      type: 'TEXT',
-      notNull: true,
+      default: pgm.func('CURRENT_TIMESTAMP'),
     },
   });
 };
@@ -44,5 +50,5 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-  pgm.dropTable('users');
+  pgm.dropTable('playlist_song_activities');
 };
