@@ -134,7 +134,7 @@ export const uploadAlbumCover = async (req, res, next) => {
   }
 
   // simpan URL baru ke DB
-  const coverUrl = `http://localhost:5000/album-covers/${req.file.filename}`;
+  const coverUrl = `http://localhost:${process.env.PORT}/album-covers/${req.file.filename}`;
   await albumRepositories.updateAlbumCover(id, coverUrl);
 
   return res.status(201).json({

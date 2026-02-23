@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { healthCheck, createAlbum, getAlbumByIdWithSongs, updateAlbumById, deleteAlbumById, likeAlbum, getLikeAlbum, unlikeAlbum } from '../controller/album-controller.js';
-import { likeAlbumPayload, getLikeAlbumPayload, unlikeAlbumPayload } from '../validator/schema.js';
+import { likeAlbumPayload } from '../validator/schema.js';
 import { createSongs, getSongByWithFilter, getSongById, updateSongById, deleteSongById } from '../controller/song-controller.js';
 import validate from '../../../middlewares/validate.js';
 import { createAlbumPayload, updateAlbumPayload, createSongsPayload, updateSongsPayload } from '../../../services/music/validator/schema.js';
@@ -24,8 +24,8 @@ router.put('/songs/:id', validate(updateSongsPayload), updateSongById);
 router.delete('/songs/:id', deleteSongById);
 
 router.post('/albums/:id/likes', authenticateToken, validate(likeAlbumPayload), likeAlbum);
-router.get('/albums/:id/likes', validate(getLikeAlbumPayload), getLikeAlbum);
-router.delete('/albums/:id/likes', authenticateToken, validate(unlikeAlbumPayload), unlikeAlbum);
+router.get('/albums/:id/likes', getLikeAlbum);
+router.delete('/albums/:id/likes', authenticateToken, unlikeAlbum);
 
 router.post(
   '/albums/:id/covers',

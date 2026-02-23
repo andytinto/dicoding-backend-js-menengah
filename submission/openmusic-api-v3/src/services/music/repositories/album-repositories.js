@@ -128,6 +128,11 @@ class AlbumRepositories {
       values: [id, userId, albumId],
     };
     const result = await this._pool.query(query);
+
+    // Set redis content
+    const cacheKey = `likes-album:${albumId}`;
+    await this.cacheService.delete(cacheKey);
+
     return result.rows[0];
   };
 

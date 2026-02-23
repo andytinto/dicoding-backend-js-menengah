@@ -4,10 +4,6 @@ import PlaylistRepository from '../../playlist/repositories/playlist-repositorie
 import AuthorizationError from '../../../exceptions/authentication-error.js';
 
 export const exportPlaylist = async (req, res, next) => {
-//   console.log('user:', req.user);
-//   console.log('params:', req.params);
-//   console.log('validated:', req.validated);
-
   const { targetEmail } = req.validated;
   const { id: playlistId } = req.params;
 
@@ -19,11 +15,10 @@ export const exportPlaylist = async (req, res, next) => {
 
   await PlaylistRepository.verifyDeletePlaylistAccess(playlistId, userId);
   const message = {
-    userId,
     targetEmail,
-    id: playlistId,
+    playlistId,
   };
 
-  await ExportService.sendMessage('export:notes', JSON.stringify(message));
-  return response(res, 201, 'Permintaan export catatan dalam antrean');
+  await ExportService.sendMessage(process.env.QUEUE_KEY, JSON.stringify(message));
+  return response(res, 201, 'Permintaan Anda sedang kami proses');
 };

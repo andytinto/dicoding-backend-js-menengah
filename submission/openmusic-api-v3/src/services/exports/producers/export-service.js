@@ -1,14 +1,12 @@
 import amqp from 'amqplib';
 
 const ExportService = {
-  sendMessage: async (queue, message) => {
+  sendMessage: async (message) => {
     const connection = await amqp.connect(process.env.RABBITMQ_SERVER);
     const channel = await connection.createChannel();
-    await channel.assertQueue('export:playlist', {
-      durable: true,
-    });
 
-    await channel.sendToQueue(queue, Buffer.from(message));
+    await channel.assertQueue(process.env.QUEUE_KEY, { durable: true });
+    await channel.sendToQueue(process.env.QUEUE_KEY, Buffer.from(message));
 
     setTimeout(() => {
       connection.close();

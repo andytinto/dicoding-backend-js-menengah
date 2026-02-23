@@ -37,15 +37,3 @@ export const likeAlbumPayload = Joi.object({
     .length(16)
     .required(),
 });
-
-export const getLikeAlbumPayload = Joi.object({
-  songId: Joi.string()
-    .length(16)
-    .required(),
-});
-
-export const unlikeAlbumPayload = Joi.object({
-  songId: Joi.string()
-    .length(16)
-    .required(),
-});
