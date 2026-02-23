@@ -158,7 +158,17 @@ export const getLikeAlbum = async (req, res, next) => {
   const { id: albumId } = req.params;
 
   const result = await albumRepositories.GetLikeAlbum(albumId);
-  return response(res, 200, null, { likes: Number(result.likes) });
+
+  console.log(result);
+
+  if (result.isFromCache) {
+    res.setHeader('X-Data-Source', 'cache');
+    return response(res, 200, null, { likes: Number(result.likes) });
+  }
+  else
+  {
+    return response(res, 200, null, { likes: result.likes });
+  }
 };
 
 export const unlikeAlbum = async (req, res, next) => {
