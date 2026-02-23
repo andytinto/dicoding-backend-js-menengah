@@ -129,6 +129,31 @@ class AlbumRepositories {
     return result.rows[0];
   };
 
+  async GetLikeAlbum(albumId){
+    await this.verifyAlbum(albumId);
+
+    const query = {
+      text: `
+      SELECT count(1) as likes
+      FROM user_album_likes a
+      WHERE a.album_id = $1`,
+      values: [albumId],
+    };
+
+    const result = await this._pool.query(query);
+    return result.rows[0];
+  };
+
+  async DeleteLikeAlbum(albumId, userId){
+    await this.verifyAlbum(albumId);
+
+    const query = {
+      text: 'DELETE FROM user_album_likes WHERE album_id = $1 and user_id = $2',
+      values: [albumId, userId],
+    };
+    await this._pool.query(query);
+  };
+
 }
 
 export default new AlbumRepositories();

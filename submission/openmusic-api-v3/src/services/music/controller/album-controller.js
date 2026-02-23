@@ -153,3 +153,21 @@ export const likeAlbum = async (req, res, next) => {
     message: 'Berhasil like album'
   });
 };
+
+export const getLikeAlbum = async (req, res, next) => {
+  const { id: albumId } = req.params;
+
+  const result = await albumRepositories.GetLikeAlbum(albumId);
+  return response(res, 200, null, { likes: Number(result.likes) });
+};
+
+export const unlikeAlbum = async (req, res, next) => {
+  const { id: albumId } = req.params;
+  const { id: userId } = req.auth;
+
+  await albumRepositories.DeleteLikeAlbum(albumId, userId);
+  return res.status(200).json({
+    status: 'success',
+    message: 'Berhasil unlike album'
+  });
+};
