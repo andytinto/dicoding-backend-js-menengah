@@ -1,5 +1,7 @@
 import { Pool } from 'pg';
 import { nanoid } from 'nanoid';
+import NotFoundError from '../../../exceptions/not-found-error.js';
+import ClientError from '../../../exceptions/client-error.js';
 
 class AlbumRepositories {
   constructor() {
@@ -80,6 +82,51 @@ class AlbumRepositories {
     };
 
     await this._pool.query(query);
+  };
+
+  async verifyAlbum(albumId) {
+    const query1 = {
+      text: `
+        SELECT albums.id
+        FROM albums
+        WHERE albums.id = $1
+      `,
+      values: [albumId],
+    };
+
+    const checkAuth = await this._pool.query(query1);
+
+    if (!checkAuth.rowCount) {
+      throw new NotFoundError(
+        'Data tidak ditemukan'
+      );
+    }
+  }
+
+  async verifyAlbumLikes(albumId, userId){
+    const query = {
+      text: 'SELECT * FROM user_album_likes WHERE album_id = $1 and user_id = $2',
+      values: [albumId, userId],
+    };
+    const result = await this._pool.query(query);
+    if (result.rowCount) {
+      throw new ClientError(
+        'Anda sudah like album ini'
+      );
+    }
+  }
+
+  async CreateLikeAlbum(albumId, userId){
+    await this.verifyAlbum(albumId);
+    await this.verifyAlbumLikes(albumId, userId);
+
+    const id = nanoid(16);
+    const query = {
+      text: 'INSERT INTO user_album_likes(id, user_id, album_id) VALUES($1, $2, $3) RETURNING id, user_id, album_id',
+      values: [id, userId, albumId],
+    };
+    const result = await this._pool.query(query);
+    return result.rows[0];
   };
 
 }

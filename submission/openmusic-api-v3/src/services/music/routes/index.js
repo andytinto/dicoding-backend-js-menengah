@@ -1,11 +1,13 @@
 import express from 'express';
 import multer from 'multer';
-import { healthCheck, createAlbum, getAlbumByIdWithSongs, updateAlbumById, deleteAlbumById } from '../controller/album-controller.js';
+import { healthCheck, createAlbum, getAlbumByIdWithSongs, updateAlbumById, deleteAlbumById, likeAlbum } from '../controller/album-controller.js';
+import { likeAlbumPayload } from '../validator/schema.js';
 import { createSongs, getSongByWithFilter, getSongById, updateSongById, deleteSongById } from '../controller/song-controller.js';
 import validate from '../../../middlewares/validate.js';
 import { createAlbumPayload, updateAlbumPayload, createSongsPayload, updateSongsPayload } from '../../../services/music/validator/schema.js';
 import uploadCover from '../../../middlewares/upload-album-cover.js';
 import { uploadAlbumCover } from '../controller/album-controller.js';
+import authenticateToken from '../../../middlewares/auth.js';
 
 const router = express.Router();
 
@@ -20,6 +22,8 @@ router.get('/songs', getSongByWithFilter);
 router.get('/songs/:id', getSongById);
 router.put('/songs/:id', validate(updateSongsPayload), updateSongById);
 router.delete('/songs/:id', deleteSongById);
+
+router.post('/albums/:id/likes', authenticateToken, validate(likeAlbumPayload), likeAlbum);
 
 router.post(
   '/albums/:id/covers',

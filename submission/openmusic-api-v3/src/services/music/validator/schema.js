@@ -31,3 +31,9 @@ export const updateSongsPayload = Joi.object({
   duration: Joi.number().integer().positive().allow(null),
   albumId: Joi.string().allow(null)
 });
+
+export const likeAlbumPayload = Joi.object({
+  songId: Joi.string()
+    .length(16)
+    .required(),
+});

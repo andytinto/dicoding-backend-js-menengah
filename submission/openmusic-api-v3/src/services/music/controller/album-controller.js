@@ -142,3 +142,14 @@ export const uploadAlbumCover = async (req, res, next) => {
     message: 'Sampul berhasil diunggah'
   });
 };
+
+export const likeAlbum = async (req, res, next) => {
+  const { id: albumId } = req.params;
+  const { id: userId } = req.auth;
+
+  await albumRepositories.CreateLikeAlbum(albumId, userId);
+  return res.status(201).json({
+    status: 'success',
+    message: 'Berhasil like album'
+  });
+};
