@@ -1,6 +1,8 @@
 import InvariantError from '../../../exceptions/invariant-error.js';
 import albumRepositories from '../repositories/album-repositories.js';
 import response from '../../../utils/response.js';
+import fs from 'fs';
+import path from 'path';
 
 export const healthCheck = (req, res) => res.json({
   status: 'success',
@@ -58,6 +60,7 @@ export const getAlbumByIdWithSongs = async (req, res, next) => {
       id: rows[0].album_id,
       name: rows[0].name,
       year: rows[0].year,
+      coverUrl: rows[0].cover,
       songs: rows
         .filter(row => row.song_id !== null)
         .map(row => ({
@@ -105,4 +108,37 @@ export const deleteAlbumById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const uploadAlbumCover = async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!req.file) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Sampul gagal diunggah'
+    });
+  }
+
+  // ambil album dari DB
+  const album = await albumRepositories.getAlbumById(id);
+
+  // hapus cover lama kalau ada
+  if (album.coverUrl) {
+    const oldFilename = album.coverUrl.split('/album-covers/')[1];
+    const oldPath = path.join('uploads/album-covers', oldFilename);
+
+    if (fs.existsSync(oldPath)) {
+      fs.unlinkSync(oldPath);
+    }
+  }
+
+  // simpan URL baru ke DB
+  const coverUrl = `http://localhost:5000/album-covers/${req.file.filename}`;
+  await albumRepositories.updateAlbumCover(id, coverUrl);
+
+  return res.status(201).json({
+    status: 'success',
+    message: 'Sampul berhasil diunggah'
+  });
 };

@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 import { nanoid } from 'nanoid';
+
 class AlbumRepositories {
   constructor() {
     this._pool = new Pool();
@@ -31,6 +32,7 @@ class AlbumRepositories {
         a.id AS album_id,
         a.name,
         a.year,
+        a.cover,
         s.id AS song_id,
         s.title,
         s.performer
@@ -65,6 +67,20 @@ class AlbumRepositories {
     };
     await this._pool.query(query);
   }
+
+  async updateAlbumCover(id, coverUrl) {
+    const query = {
+      text: `
+        UPDATE albums
+        SET cover = $1
+        WHERE id = $2
+        RETURNING id
+      `,
+      values: [coverUrl, id],
+    };
+
+    await this._pool.query(query);
+  };
 
 }
 
