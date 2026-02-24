@@ -19,9 +19,6 @@ export const exportPlaylist = async (req, res, next) => {
     playlistId,
   };
 
-  await ExportService.sendMessage(
-    process.env.QUEUE_KEY,
-    message
-  );
+  await ExportService.sendMessage(process.env.QUEUE_KEY, JSON.stringify(message));
   return response(res, 201, 'Permintaan Anda sedang kami proses');
 };

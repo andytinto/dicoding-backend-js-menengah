@@ -32,6 +32,18 @@ class PlaylistRepositories {
     return result.rows;
   }
 
+  async getPlaylistsById(playlistId) {
+    const query = {
+      text: `SELECT playlists.id, playlists.name, users.username FROM playlists 
+      LEFT JOIN users ON playlists.owner = users.id 
+      WHERE playlists.id = $1`,
+      values: [playlistId],
+    };
+
+    const result = await this._pool.query(query);
+    return result.rows;
+  }
+
   async deletePlaylistById(id) {
     const query = {
       text: 'DELETE FROM playlists WHERE id = $1',
@@ -86,7 +98,6 @@ class PlaylistRepositories {
   }
 
   async verifyDeletePlaylistAccess(playlistId, userId) {
-    console.log(userId);
     const query1 = {
       text: `
         SELECT playlists.owner
