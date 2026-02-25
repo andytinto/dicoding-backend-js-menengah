@@ -24,7 +24,9 @@ class PlaylistRepositories {
     const query = {
       text: `SELECT playlists.id, playlists.name, users.username FROM playlists 
       LEFT JOIN users ON playlists.owner = users.id 
-      WHERE playlists.owner = $1`,
+      LEFT JOIN collaborations ON collaborations.playlist_id = playlists.id
+      WHERE playlists.owner = $1 OR collaborations.user_id = $1
+      GROUP BY playlists.id, users.username`,
       values: [owner],
     };
 

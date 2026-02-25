@@ -19,7 +19,19 @@ class Listener {
         throw new Error('Invalid payload');
       }
 
-      const playlist = await this._playlistRepositories.getPlaylistsById(playlistId);
+      const rows = await this._playlistRepositories.getPlaylistsById(playlistId);
+
+      const playlist = {
+        id: rows[0].playlist_id,
+        name: rows[0].playlist_name,
+        songs: rows
+          .filter(row => row.song_id !== null)
+          .map(row => ({
+            id: row.song_id,
+            title: row.song_title,
+            performer: row.song_performer,
+          })),
+      };
 
       console.log('PLAYLIST:', playlist);
 

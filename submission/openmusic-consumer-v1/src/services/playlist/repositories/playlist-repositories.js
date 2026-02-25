@@ -34,9 +34,20 @@ class PlaylistRepositories {
 
   async getPlaylistsById(playlistId) {
     const query = {
-      text: `SELECT playlists.id, playlists.name, users.username FROM playlists 
-      LEFT JOIN users ON playlists.owner = users.id 
-      WHERE playlists.id = $1`,
+      text: `SELECT
+              playlists.id        AS playlist_id,
+              playlists.name      AS playlist_name,
+              users.username      AS owner_username,
+              songs.id            AS song_id,
+              songs.title         AS song_title,
+              songs.performer     AS song_performer
+            FROM playlists
+            JOIN users ON users.id = playlists.owner
+            LEFT JOIN playlist_songs
+              ON playlist_songs.playlist_id = playlists.id
+            LEFT JOIN songs
+              ON songs.id = playlist_songs.song_id
+            WHERE playlists.id = $1`,
       values: [playlistId],
     };
 
